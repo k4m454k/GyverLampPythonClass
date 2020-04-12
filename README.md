@@ -1,4 +1,6 @@
+# Gyver Lamp python class
 
+Working with Gyver firmware https://github.com/AlexGyver/GyverLamp
 
 ### Usage
 
