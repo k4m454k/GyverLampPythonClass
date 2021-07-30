@@ -32,10 +32,10 @@ class Lamp:
         self._brightness = 0
         self._speed = 0
         self._scale = 0
-        if not self.get_status():
+        if not self.update_status():
             raise socket.timeout
 
-    def get_status(self):
+    def update_status(self):
         # ['CURR', '1', '227', '19', '1', '0']
         self.sock.sendto(b"GET", self.address)
         return self._parse_input_()
@@ -45,7 +45,7 @@ class Lamp:
         while True:
             try:
                 input_data = self.sock.recv(1024).decode().split(" ")
-                # print("DEBUG INPUT:", input_data)
+                print("DEBUG INPUT:", input_data)
             except socket.timeout:
                 return None
             if not isinstance(input_data, list):
@@ -108,3 +108,7 @@ class Lamp:
     def disable(self):
         self.sock.sendto(b"P_OFF", self.address)
         self._parse_input_()
+
+    def __str__(self):
+        return f"LAMP{self.address} - Enabled: {'YES' if self.is_enabled else 'NO'}, " \
+               f"Effect: {self.effect}, Brightness: {self.brightness}, Speed: {self.speed}, Scale: {self.scale}"
